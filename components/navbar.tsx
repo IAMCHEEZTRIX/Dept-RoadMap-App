@@ -4,7 +4,8 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Menu, X } from "lucide-react"
 import { useState } from "react"
-import Image from "next/image";
+import Image from "next/image"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 
 const navLinks = [
@@ -34,33 +35,40 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex md:items-center md:gap-2">
-            {navLinks.map((link) => {
-              const isActive = pathname === link.href
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
-                    isActive
-                      ? "bg-[color:var(--card)]/60 text-[color:var(--primary-color)] underline decoration-[color:var(--primary-color)] decoration-2 underline-offset-4"
-                      : "text-[color:var(--muted)] hover:bg-[color:var(--card)]/40 hover:text-[color:var(--text)]"
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              )
-            })}
+          <div className="hidden md:flex md:items-center md:gap-4">
+            <div className="flex items-center gap-2">
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
+                      isActive
+                        ? "bg-[color:var(--card)]/60 text-[color:var(--primary-color)] underline decoration-[color:var(--primary-color)] decoration-2 underline-offset-4"
+                        : "text-[color:var(--muted)] hover:bg-[color:var(--card)]/40 hover:text-[color:var(--text)]"
+                    }`}
+                  >
+                    {link.name}
+                  </Link>
+                )
+              })}
+            </div>
+            <ThemeToggle />
           </div>
 
           {/* Mobile menu button */}
-          <button
-            type="button"
-            className="md:hidden rounded-lg p-2 text-[color:var(--muted)] hover:bg-[color:var(--card)]/40"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
+          <div className="flex items-center gap-2 md:hidden">
+            <ThemeToggle />
+            <button
+              type="button"
+              className="rounded-lg p-2 text-[color:var(--muted)] hover:bg-[color:var(--card)]/40"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle navigation menu"
+            >
+              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </div>
         </div>
       </div>
 

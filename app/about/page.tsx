@@ -17,8 +17,7 @@ export default function AboutPage() {
                 About Us
               </h1>
               <p className="mx-auto mt-4 max-w-2xl text-lg text-[color:var(--muted)] leading-relaxed text-pretty">
-                Meet our dedicated faculty and staff who are committed to excellence in computer science education and
-                research.
+                We are the Computing Subcommittee, a group of passionate students dedicated to promoting technology, innovation, and collaboration within the Faculty of Science and Technology. Our goal is to create opportunities for learning, leadership, and community impact through computing-driven initiatives and events.
               </p>
             </div>
           </div>

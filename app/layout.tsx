@@ -1,8 +1,10 @@
 import type React from "react"
 import type { Metadata } from "next"
+import Script from "next/script"
 import { Geist, Geist_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { RoadmapProvider } from "@/context/roadmap-context"
+import { ThemeProvider } from "@/components/theme-provider"
 import "./globals.css"
 
 const _geist = Geist({ subsets: ["latin"] })
@@ -14,16 +16,37 @@ export const metadata: Metadata = {
   generator: "v0.app",
 }
 
+const themeInitializationScript = `(() => {
+  const storageKey = 'dept-theme';
+  const classList = document.documentElement.classList;
+  try {
+    const storedTheme = window.localStorage.getItem(storageKey);
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = storedTheme === 'light' || storedTheme === 'dark' ? storedTheme : prefersDark ? 'dark' : 'light';
+    classList.remove('light', 'dark');
+    classList.add(theme);
+    document.documentElement.style.colorScheme = theme;
+  } catch (error) {
+    classList.add('light');
+    document.documentElement.style.colorScheme = 'light';
+  }
+})();`
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className={`font-sans antialiased dark`}>
-        <RoadmapProvider>{children}</RoadmapProvider>
-        <Analytics />
+    <html lang="en" suppressHydrationWarning>
+      <body className="font-sans antialiased">
+        <Script id="theme-script" strategy="beforeInteractive">
+          {themeInitializationScript}
+        </Script>
+        <ThemeProvider>
+          <RoadmapProvider>{children}</RoadmapProvider>
+          <Analytics />
+        </ThemeProvider>
       </body>
     </html>
   )
